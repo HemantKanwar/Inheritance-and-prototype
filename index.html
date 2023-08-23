@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Inheritance and prototype</title>
+    <link rel="stylesheet" href="./style.css" >
+</head>
+<body>
+    <h2>
+        Q1 => Create 2 objects - parent and child. Attach methods to parent and use those methods in child object using parents prototype.
+        <pre>
+            
+            Ans :   function Parent(name) {
+                this.name = name;
+              }
+              
+              Parent.prototype.greet = function() {
+                console.log(`Hello, my name is ${this.name}`);
+              };
+              
+            
+              function Child(name, age) {
+                Parent.call(this, name);
+                this.age = age;
+              }
+              
+              Child.prototype = Object.create(Parent.prototype);
+              
+              Child.prototype.introduce = function() {
+                console.log(`I'm ${this.name} and I'm ${this.age} years old.`);
+              };
+              
+              const parent = new Parent("John");
+              const child = new Child("Alice", 10);
+              
+              parent.greet();      
+              child.greet();        
+              child.introduce();    
+              
+        </pre>
+        <br/>
+
+        Q2 =>  Write code to explain prototype chaining.
+        <pre>
+            
+            Ans : function Parent(name) {
+                this.name = name;
+              }
+            
+              Parent.prototype.greet = function() {
+                console.log(`Hello, my name is ${this.name}`);
+              };
+              
+              function Child(name, age) {
+                Parent.call(this, name);
+                this.age = age;
+              }
+              
+              Child.prototype = Object.create(Parent.prototype);
+            
+              Child.prototype.introduce = function() {
+                console.log(`I'm ${this.name} and I'm ${this.age} years old.`);
+              };
+              
+              function Grandchild(name, age, hobby) {
+                Child.call(this, name, age); 
+                this.hobby = hobby;
+              }
+            
+              Grandchild.prototype = Object.create(Child.prototype);
+              
+              Grandchild.prototype.describeHobby = function() {
+                console.log(`My hobby is ${this.hobby}`);
+              };
+              
+              const grandchild = new Grandchild("Eve", 5, "Painting");
+             
+              grandchild.greet();         
+              grandchild.introduce();      
+              grandchild.describeHobby();  
+            
+        </pre>
+        <br/>
+
+        Q3 => Add a method to calculate sum of all elements in Array in array's protype, use that method to calculate sum for multiple arrays.
+        <pre>
+            
+            Ans : Array.prototype.sum = function() {
+                return this.reduce((total, current) => total + current, 0);
+              };
+              
+              const array1 = [1, 2, 3, 4, 5];
+              const array2 = [10, 20, 30];
+              const array3 = [2, 4, 6, 8];
+              
+              console.log(`Sum of array1: ${array1.sum()}`); 
+              console.log(`Sum of array2: ${array2.sum()}`);
+              console.log(`Sum of array3: ${array3.sum()}`); 
+              
+        </pre>
+        <br/>
+
+        Q4 => Write a JavaScript function to retrieve all the names of object's own and inherited properties.
+        <pre>
+            Ans :   
+
+            function getAllPropertyNames(obj) {
+                const propertyNames = [];
+              
+                function traversePrototypeChain(currentObj) {
+                  if (currentObj === null) {
+                    return;
+                  }
+              
+                  const ownProperties = Object.getOwnPropertyNames(currentObj);
+                  propertyNames.push(...ownProperties);
+              
+                  traversePrototypeChain(Object.getPrototypeOf(currentObj));
+                }
+              
+                traversePrototypeChain(obj);
+                return propertyNames;
+              }
+              
+              // Test with an example object
+              const person = {
+                firstName: "John",
+                lastName: "Doe"
+              };
+              
+              const student = Object.create(person);
+              student.studentId = "12345";
+              
+              const allProperties = getAllPropertyNames(student);
+              console.log(allProperties);
+              
+        </pre>
+    </h2>
+</body>
+</html>
